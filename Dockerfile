@@ -1,5 +1,5 @@
 #Get based OS
-FROM ubuntu:lates
+FROM ubuntu:latest
 MAINTAINER EPAM DevOps course
 USER root
 RUN groupadd docker && gpasswd -a jenkins docker 
