@@ -1,12 +1,15 @@
 #!groovy
 pipeline {
-    agent { dockerfile true }
+    agent any
     stages {
-        stage('Build') {
+        stage('Build image') {
             steps {
-                echo 'Building..'
-                
-                echo 'Image was build'
+                echo 'Check repository'
+                checkout scm
+            }
+            steps{
+                echo 'Build Image'
+                def customImage = docker.build("my-image:${env.BUILD_ID}")
             }
         }
         stage('Deploy') {
