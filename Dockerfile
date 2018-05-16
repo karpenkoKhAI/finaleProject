@@ -1,6 +1,9 @@
 #Get based OS
 FROM ubuntu:lates
 MAINTAINER EPAM DevOps course
+USER root
+RUN groupadd docker && gpasswd -a jenkins docker 
+
 #Update image
 RUN sudo apt-get update -y && sudo apt-get upgrade -y
 #Install nginx
