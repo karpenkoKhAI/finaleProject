@@ -1,2 +1,2 @@
 # finaleProject
-Сука
+НАЧАЛО
