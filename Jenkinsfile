@@ -1,17 +1,12 @@
 #!groovy
 pipeline {
-    
-    agent { dockerfile true }
-    
+    agent any
     stages {
         stage('Build') {
             steps {
                 echo 'Building..'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
+                agent { dockerfile true }
+                echo 'Image was build'
             }
         }
         stage('Deploy') {
