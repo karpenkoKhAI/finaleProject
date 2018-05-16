@@ -1,14 +1,18 @@
 #!groovy
 pipeline {
     agent any
+
     stages {
-        stage('Build image') {
-            
-               
-          
-                echo 'Build Image'
+        stage('Build') {
+            steps {
+                echo 'Building..'
                 def customImage = docker.build("my-image:${env.BUILD_ID}")
-            
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
         }
         stage('Deploy') {
             steps {
@@ -17,3 +21,5 @@ pipeline {
         }
     }
 }
+                
+            
