@@ -14,4 +14,4 @@ ADD nginx.conf /etc/nginx
 #Run nginx on 80 port
 EXPOSE 80
 #Run nginx server on docker 
-CMD["nginx","-g","daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
