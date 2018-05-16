@@ -1,8 +1,8 @@
 #Get based OS
 FROM ubuntu:latest
 MAINTAINER EPAM DevOps course
-USER root
-RUN groupadd docker && gpasswd -a jenkins docker 
+#USER root
+#RUN groupadd docker && gpasswd -a jenkins docker 
 
 #Update image
 RUN sudo apt-get update -y && sudo apt-get upgrade -y
