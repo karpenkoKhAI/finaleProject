@@ -10,8 +10,8 @@
     }
 
     stage('Test image') {
-       sh "docker start nginximage"
-       sh "docker stop nginximage"
+       //sh "docker start nginximage"
+       //sh "docker stop nginximage"
     }
 
     stage('Push image') {
