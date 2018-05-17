@@ -15,11 +15,14 @@
     }
 
     stage('Push image') {
-       sh "docker tag nginximage karpenkokhai/finaleproject"
-       sh "docker push karpenkokhai/finaleproject"
+      agent any
+      withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh "docker tag nginximage karpenkokhai/finaleproject"
+          sh "docker push karpenkokhai/finaleproject"
        // sh "docker push karpenkokhai/finaleproject"
-          
         }
+      }
     }
 
 
