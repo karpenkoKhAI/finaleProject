@@ -4,7 +4,6 @@
 
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
-
         checkout scm
     }
 
@@ -13,12 +12,14 @@
     }
 
     stage('Test image') {
-       sh "docker run -d -p 80:80 nginximage"
+       sh "docker start nginximage"
        sh "docker stop nginximage"
     }
 
     stage('Push image') {
-        sh "docker pull karpenkokhai/finaleproject"
+       sh "docker tag nginximage karpenkokhai/finaleproject"
+       sh "docker push karpenkokhai/finaleproject"
+       // sh "docker push karpenkokhai/finaleproject"
           
         }
     }
