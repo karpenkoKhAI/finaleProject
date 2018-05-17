@@ -12,7 +12,7 @@
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
-      sh "docker build -t Image ."
+      sh "docker build -t nginximage ."
     }
 
     stage('Test image') {
