@@ -12,16 +12,15 @@
     stage('Test image') {
        //sh "docker start nginximage"
        //sh "docker stop nginximage"
-    }
-
-    stage('Push image') {
+       }
+    stage('Docker Push') {
       agent any
-      withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
           sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-          sh "docker tag nginximage karpenkokhai/finaleproject"
-          sh "docker push karpenkokhai/finaleproject"
-       // sh "docker push karpenkokhai/finaleproject"
+          sh 'docker push shanem/spring-petclinic:latest'
         }
+      }
       }
     }
 
