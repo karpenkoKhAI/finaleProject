@@ -1,5 +1,4 @@
 #!groovy
-pipeline {
   node {
     def app
 
@@ -13,7 +12,7 @@ pipeline {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
-        app = docker.build()
+      app = docker.build("-f ${Dockerfile}")
     }
 
     stage('Test image') {
@@ -35,7 +34,7 @@ pipeline {
           //  app.push("latest")
         }
     }
-}
+
 
                 
             
