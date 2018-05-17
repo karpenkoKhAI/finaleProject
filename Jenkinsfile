@@ -18,7 +18,7 @@
     }
 
     stage('Push image') {
-          docker pull karpenkokhai/finaleproject
+        sh "docker pull karpenkokhai/finaleproject"
           
         }
     }
