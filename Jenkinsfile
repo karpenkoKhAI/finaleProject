@@ -13,7 +13,7 @@
     }
 
     stage('Test image') {
-       sh "docker run -p 80:80 nginximage"
+       sh "docker run -d -p 80:80 nginximage"
        sh "docker stop nginximage"
     }
 
