@@ -14,10 +14,10 @@
        //sh "docker stop nginximage"
        }
     stage('Docker Push') {
-          withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) 
+          withCredentials([usernamePassword(credentialsId: 'Dockerhub', passwordVariable: 'DockerhubPassword', usernameVariable: 'DockerhubUser')]) 
       {
           sh "docker tag nginximage karpenkokhai/finaleproject"
-          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh "docker login -u ${env.DockerhubUser} -p ${env.DockerhubPassword}"
           sh 'docker push karpenkokhai/finaleproject:latest'
       }
       
