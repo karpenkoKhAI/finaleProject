@@ -20,12 +20,13 @@ node('JenkinsSlave-01'){
           sh "docker login -u ${env.DockerhubUser} -p ${env.DockerhubPassword}"
           sh "docker push karpenkokhai/finaleproject:latest"
       }
+    }
       stage('Run nginx server'){
         /*   sh "docker-machine env ReleaseServer" */
          /*  sh "eval $(docker-machine env ReleaseServer)"*/
           sh "docker run -p 80:80 nginximage"    
       }
-    }
+ }
     
    /*  notifySuccessful()
     
