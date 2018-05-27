@@ -1,8 +1,8 @@
 #!groovy
 node('JenkinsSlave-01'){ 
   
-    try{
-    notifyStarted()
+    /* try{
+    notifyStarted()*/
   
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
@@ -27,7 +27,7 @@ node('JenkinsSlave-01'){
       }
     }
     
-    notifySuccessful()
+   /*  notifySuccessful()
     
     } catch (e) {
         currentBuild.result = "FAILED"
@@ -121,7 +121,7 @@ def notifyBuild(String buildStatus = 'STARTED') {
       body: details,
       recipientProviders: [[$class: 'DevelopersRecipientProvider']]
     )
-}
+}*/
 
 
                 
