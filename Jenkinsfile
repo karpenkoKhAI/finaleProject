@@ -21,8 +21,8 @@ node('JenkinsSlave-01'){
           sh "docker push karpenkokhai/finaleproject:latest"
       }
       stage('Run nginx server'){
-          sh "docker-machine env ReleaseServer"
-          sh "eval $(docker-machine env ReleaseServer)"
+        /*   sh "docker-machine env ReleaseServer" */
+         /*  sh "eval $(docker-machine env ReleaseServer)"*/
           sh "docker run -p 80:80 nginximage"    
       }
     }
