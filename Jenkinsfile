@@ -1,5 +1,5 @@
 #!groovy
-node('JenkinsSlave-01){ 
+node('JenkinsSlave-01'){ 
   
     try{
     notifyStarted()
