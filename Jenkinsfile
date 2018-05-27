@@ -13,16 +13,16 @@ node('JenkinsSlave-01'){
        sh "docker build -t nginximage ."
     }
 
-    stage('Docker Push') {
+  /*  stage('Docker Push') {
           withCredentials([usernamePassword(credentialsId: 'Dockerhub', passwordVariable: 'DockerhubPassword', usernameVariable: 'DockerhubUser')]) 
       {
           sh "docker tag nginximage karpenkokhai/finaleproject"
           sh "docker login -u ${env.DockerhubUser} -p ${env.DockerhubPassword}"
           sh "docker push karpenkokhai/finaleproject:latest"
       }
-    }
+    }*/
       stage('Run nginx server'){
-        /*   sh "docker-machine env ReleaseServer" */
+        /*   sh "docker-machine env ReleaseServer" 
          /*  sh "eval $(docker-machine env ReleaseServer)"*/
           sh "docker run -p 80:80 nginximage"    
       }
