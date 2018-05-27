@@ -141,7 +141,7 @@ make install
 
 create_nginx_user
 
-nginx -t
+#nginx -t
 
 #if [ ! -z $IS_ALPINE ]; then 
 #  remove_alpine_packages
