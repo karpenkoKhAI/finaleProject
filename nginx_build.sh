@@ -2,13 +2,27 @@
 #Install 
 apt-get install -y wget unzip make libssl-dev libpcre3-dev gcc make zlib1g-dev >> /dev/null
 #Download source code function
-downloadAndExtract()
+create_nginx_user() {  
+  if [ ! -z $IS_ALPINE ]; then 
+    getent group nginx || addgroup nginx
+    getent passwd nginx || adduser -G nginx -S -H -s /sbin/nologin nginx 
+  else
+    getent group nginx || groupadd nginx
+    getent user nginx || useradd -g nginx --system --no-create-home nginx 
+  fi
+}
+
+remove_alpine_packages() {
+  apk del /tmp/.build-deps
+}
+
+download_extract()
 {
-    TARGET_URL=$1
+    URL=$1
     FILENAME=$2
     FOLDER=$3
     EXTRACT=$4
-    
+
     if [ ! -d $FOLDER ]; then
         mkdir -p $FOLDER
     fi
@@ -18,29 +32,33 @@ downloadAndExtract()
     fi
 
     if [ ! -f "$FOLDER/$FILENAME" ]; then
-       wget --quiet  --force-directories --output-document="$FOLDER/$FILENAME" $TARGET_URL
+        echo "Downloading $URL to $FOLDER/$FILENAME"
+        wget --quiet  --force-directories --output-document="$FOLDER/$FILENAME" $URL
     fi
 
     if [ ! -z "$EXTRACT" ]; then
+        echo "Extracting $FOLDER/$FILENAME to $EXTRACT"
         case $FILENAME in
           *.zip) unzip -q -o -d "$EXTRACT" "$FOLDER/$FILENAME";;
           *.tar.gz) tar xf "$FOLDER/$FILENAME" -C "$EXTRACT";;
-          *) echo "Error file format";;
+          *) echo "Unknown file format for $FILENAME";;
         esac
 
         FILECOUNT=$(ls -al $EXTRACT | wc -l | tr " " "\0")
         if [ "$FILECOUNT" = "4" ]; then
+           # We have a single folder and need to move content to upper folder
            FOLDER_NAME=$(ls $EXTRACT | tr " " "\0")
            mv $EXTRACT/$FOLDER_NAME/* $EXTRACT/
            rm -rf $EXTRACT/$FOLDER_NAME
         fi
     fi
 }
-#Variables 
+
 LUA_JIT_VERSION=${LUA_JIT_VERSION:-2.0.4}
 NGINX_VERSION=${NGINX_VERSION:-1.11.3}
 NGINX_DEVEL_VERSION=${NGINX_DEVEL_VERSION:-v0.3.0}
 
+# use blank value for NGINX_MODULE_TYPE if you want modules to be statically compiled
 NGINX_MODULE_TYPE=${NGINX_MODULE_TYPE:-}
 
 LUA_JIT_FILE=LuaJIT-${LUA_JIT_VERSION}.tar.gz
@@ -67,30 +85,32 @@ LUA_SYSLOG_FILE=lua-syslog.zip
 LUA_ECHO_URL=https://github.com/openresty/echo-nginx-module/archive/master.zip
 LUA_ECHO_FILE=lua-echo.zip
 
-#Downloads and extract
-downloadAndExtract $NGINX_URL $NGINX_FILE downloads extracts/nginx-${NGINX_VERSION}
-downloadAndExtract $NGINX_DEVEL_URL $NGINX_DEVEL_FILE downloads extracts/modules/ngx_devel_kit
 
-downloadAndExtract $LUA_CJSON_URL $LUA_CJSON_FILE downloads extracts/deps/lua_cjson
-downloadAndExtract $LUA_SYSLOG_URL $LUA_SYSLOG_FILE downloads extracts/deps/lua-syslog
+download_extract $NGINX_URL $NGINX_FILE downloads extracts/nginx-${NGINX_VERSION}
+download_extract $NGINX_DEVEL_URL $NGINX_DEVEL_FILE downloads extracts/modules/ngx_devel_kit
 
-downloadAndExtract $LUA_MAIN_URL $LUA_MAIN_FILE downloads extracts/modules/lua-nginx-module
-downloadAndExtract $LUA_ECHO_URL $LUA_ECHO_FILE downloads extracts/modules/lua-echo-module
+download_extract $LUA_CJSON_URL $LUA_CJSON_FILE downloads extracts/deps/lua_cjson
+download_extract $LUA_SYSLOG_URL $LUA_SYSLOG_FILE downloads extracts/deps/lua-syslog
 
-download_extract $LUA_JIT_URL $LUA_JIT_FILE downloads extracts/deps/luajit
+download_extract $LUA_MAIN_URL $LUA_MAIN_FILE downloads extracts/modules/lua-nginx-module
+download_extract $LUA_ECHO_URL $LUA_ECHO_FILE downloads extracts/modules/lua-echo-module
 
-#Make lua
-make -C extracts/deps/luajit install
+#if [ -z $IS_ALPINE ]; then
+   download_extract $LUA_JIT_URL $LUA_JIT_FILE downloads extracts/deps/luajit
+   
+   make -C extracts/deps/luajit install
+#fi
 
 export LUAJIT_LIB=/usr/local/lib 
 export LUAJIT_INC=/usr/local/include/luajit-2.0
 export LUA_INCLUDE_DIR=$LUAJIT_INC
 export LUA_LIB_DIR=$LUAJIT_LIB
 
+#make -C extracts/deps/lua-syslog 
 make -C extracts/deps/lua_cjson
 
-cd extracts/nginx-${NGINX_VERSION}
 
+cd extracts/nginx-${NGINX_VERSION}
 LUAJIT_LIB=/usr/local/lib LUAJIT_INC=/usr/local/include/luajit-2.0 \
 ./configure \
 --user=nginx                          \
@@ -116,34 +136,16 @@ LUAJIT_LIB=/usr/local/lib LUAJIT_INC=/usr/local/include/luajit-2.0 \
 --add${NGINX_MODULE_TYPE}-module=$PWD/../modules/lua-nginx-module \
 --add${NGINX_MODULE_TYPE}-module=$PWD/../modules/lua-echo-module
 
-make -j 4 # Stream
-
+make -j 4
 make install
 
-#Create user
-getent group nginx || groupadd nginx
-getent user nginx || useradd -g nginx --system --no-create-home nginx
+create_nginx_user
 
 nginx -t
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#if [ ! -z $IS_ALPINE ]; then 
+#  remove_alpine_packages
+#fi 
 
 
 
