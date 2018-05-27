@@ -3,11 +3,15 @@ FROM ubuntu:latest
 MAINTAINER EPAM DevOps course
 #USER root
 #RUN groupadd docker && gpasswd -a jenkins docker 
-
+COPY nginx.sh /tmp
+ARG NGINX_VERSION=1.11.0
+ARG NGINX_MODULE_TYPE=-dynamic
 #Update image
 RUN apt-get update -y && apt-get upgrade -y
 #Install nginx
-RUN apt-get install nginx -y
+RUN cd /tmp && sh /tmp/nginx.sh && rm -rf /tmp/*
+WORKDIR /etc/nginx
+VOLUME ["/var/log/nginx", "/var/www/html"]
 #Replace standart nginx.conf
 RUN rm /etc/nginx/nginx.conf
 ADD nginx.conf /etc/nginx
