@@ -8,7 +8,13 @@ node('JenkinsSlave-01'){
        sh "docker build -t nginximage ."
     }
 
-/* stage('Docker Push') {
+
+ stage('Run nginx server'){
+          sh "docker-machine env awsMachine" 
+          sh 'eval $(docker-machine env awsMachine)'
+          sh "docker run -p 80:80 nginximage"    
+      }
+  stage('Docker Push') {
          agent any
        		 
        withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
@@ -16,12 +22,7 @@ node('JenkinsSlave-01'){
            sh "docker tag nginximage karpenkokhai/finaleproject"
            sh "docker push karpenkokhai/finaleproject"
      }
-    }*/
- stage('Run nginx server'){
-          sh "docker-machine env awsMachine" 
-          sh 'eval $(docker-machine env awsMachine)'
-          sh "docker run -p 80:80 nginximage"    
-      }
+    }
 }
 
 
