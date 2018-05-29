@@ -19,6 +19,6 @@ WORKDIR /etc/nginx
 #RUN rm /var/www/html/index.nginx-debian.html
 #ADD index.html /var/www/html/
 #Run nginx on 80 port
-#EXPOSE 80
+EXPOSE 80
 #Run nginx server on docker 
-#CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
