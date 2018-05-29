@@ -54,4 +54,4 @@ make
  mkdir /var/cache/nginx
  touch /var/cache/nginx/client_temp
 
-
+service nginx start
