@@ -1,4 +1,4 @@
-#Get based OSf
+#Get based OS
 FROM ubuntu:latest
 MAINTAINER EPAM DevOps course
 #USER root
