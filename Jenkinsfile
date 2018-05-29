@@ -10,7 +10,7 @@ node('JenkinsSlave-01'){
 
  stage('Docker Push') {
          agent any
-       sh "docker push karpenkokhai/finaleproject"		 
+       		 
        withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
            sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
            sh "docker tag nginximage karpenkokhai/finaleproject"
