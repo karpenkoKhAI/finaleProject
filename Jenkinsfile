@@ -18,8 +18,8 @@ node('JenkinsSlave-01'){
      }
     }
  stage('Run nginx server'){
-          sh "docker-machine env Slave" 
-          sh 'eval $(docker-machine env Slave)'
+          sh "docker-machine env awsMachine" 
+          sh 'eval $(docker-machine env awsMachine)'
           sh "docker run -p 80:80 nginximage"    
       }
 }
