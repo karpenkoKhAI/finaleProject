@@ -1,14 +1,14 @@
 
 FROM ubuntu:16.04
 
+MAINTAINER epam epam@epam.com
+
 COPY build.sh /tmp
 
 ARG NGINX_VERSION=1.11.0
 
-# Use -dynamic or blank
 ARG NGINX_MODULE_TYPE=-dynamic
 
-# To build with debug version set value as 1 during build
 ARG NGINX_DEBUG
 
 
