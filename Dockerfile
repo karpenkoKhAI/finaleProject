@@ -16,6 +16,8 @@ RUN cd /tmp && sh /tmp/build.sh && rm -rf /tmp/*
 
 WORKDIR /etc/nginx
 
+COPY  /usr/local/nginx
+
 EXPOSE 80 443 8080
 
 VOLUME ["/var/log/nginx", "/var/www/html"]
