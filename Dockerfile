@@ -1,24 +1,25 @@
-#Get based OSq
-FROM ubuntu:latest
-MAINTAINER EPAM DevOps course
-#USER root
-#RUN groupadd docker && gpasswd -a jenkins docker 
+
+FROM ubuntu:16.04
+
 COPY build.sh /tmp
+
 ARG NGINX_VERSION=1.11.0
+
+# Use -dynamic or blank
 ARG NGINX_MODULE_TYPE=-dynamic
-#Update image
-RUN apt-get update -y && apt-get upgrade -y
-#Install nginx
+
+# To build with debug version set value as 1 during build
+ARG NGINX_DEBUG
+
+
 RUN cd /tmp && sh /tmp/build.sh && rm -rf /tmp/*
+
 WORKDIR /etc/nginx
+
+EXPOSE 80 443 8080
+
 VOLUME ["/var/log/nginx", "/var/www/html"]
-#Replace standart nginx.conf
-#RUN rm /etc/nginx/nginx.conf
-#ADD nginx.conf /etc/nginx
-#Replace standart index.html
-#RUN rm /var/www/html/index.nginx-debian.html
-#ADD index.html /var/www/html/
-#Run nginx on 80 port
-EXPOSE 80
-#Run nginx server on docker 
+
+#CMD sh
 CMD ["nginx", "-g", "daemon off;"]
+
