@@ -9,8 +9,7 @@ node('JenkinsSlave-01'){
     }
  
  stage('Docker Push') {
-         agent any
-       		 sh 'docker login -u $dockerHubUser -p $dockerHubPassword'
+          sh 'docker login -u $dockerHubUser -p $dockerHubPassword'
           sh "docker tag nginximage karpenkokhai/finaleproject"
           sh "docker push karpenkokhai/finaleproject"
      }
