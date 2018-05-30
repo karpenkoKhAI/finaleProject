@@ -16,7 +16,8 @@ RUN cd /tmp && sh /tmp/build.sh && rm -rf /tmp/*
 
 WORKDIR /etc/nginx
 
-COPY nginx.conf /usr/local/nginx
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY index.html /etc/nginx/html/index.html
 
 EXPOSE 80 443 8080
 
