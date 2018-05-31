@@ -19,7 +19,7 @@ WORKDIR /etc/nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY index.html /etc/nginx/html/index.html
 
-EXPOSE 80 443 8080
+EXPOSE 80
 
 VOLUME ["/var/log/nginx", "/var/www/html"]
 
